@@ -1,0 +1,46 @@
+{
+  "name": "upwordly-backend",
+  "version": "1.0.0",
+  "description": "Backend for Upwordly WebSockets servers.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "startdev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "steno",
+    "stenography",
+    "Upwordly",
+    "Aloft",
+    "realtime",
+    "transcription",
+    "live",
+    "transcription",
+    "captioning",
+    "captions"
+  ],
+  "author": "Stanley Sakai",
+  "license": "ISC",
+  "dependencies": {
+    "@teamwork/sharedb": "^3.1.0",
+    "@teamwork/websocket-json-stream": "^2.0.0",
+    "body-parser": "^1.18.3",
+    "cluster": "^0.7.7",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "http-errors": "^1.7.2",
+    "os": "^0.1.1",
+    "ot-text": "^1.0.2",
+    "pug": "^2.0.3",
+    "sharedb-mongo": "^1.0.0-beta.8",
+    "sharedb-redis-pubsub": "^1.0.0-beta.1",
+    "websocket-json-stream": "0.0.3",
+    "ws": "^6.2.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.11"
+  }
+}
