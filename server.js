@@ -12,10 +12,12 @@ const apiRouter           = require('./routes/api'),
       WebSocket           = require('ws'),
       WebSocketJSONStream = require('websocket-json-stream');
 
+// Creating express server.
 const app = express();
 const server = http.createServer(app);
 const socket = new WebSocket.Server({ server });
 
+// Hooking up ShareDB backend to Redis and Mongo.
 const backend = new ShareDB({
   db: connections.mongo,
   pubsub: connections.redis,
@@ -58,7 +60,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// Create a web server to serve files and listen to WebSocket connections
+// Create a web server to serve raw transcript data
+// and listen to WebSocket connections.
 function startServer(port) {
   socket.on('connection', (websocket, req) => {
     if (process.env.NODE_ENV !== 'production') {
