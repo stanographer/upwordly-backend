@@ -43,5 +43,6 @@
   "devDependencies": {
     "morgan": "^1.9.1",
     "nodemon": "^1.18.11"
-  }
+  },
+  "repository": "https://github.com/stanographer/upwordly-backend.git"
 }
