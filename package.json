@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "copy": "scp -r ~/Developer/upwordly-backend* stanley@upword.ly:~/upwordly/",
-    "start": "NODE_ENV=production PORT=9090 node app.js",
+    "start": "NODE_ENV=production MONGO_IP=165.227.187.41:27017 REDIS_IP=134.209.40.72:6379 PORT=9090 node app.js",
     "startdev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
