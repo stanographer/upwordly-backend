@@ -1,5 +1,5 @@
 FROM node:11-alpine
-MAINTAINER stanley@stanographer.com
+MAINTAINER Stanley Sakai <stanley@stanographer.com>
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
