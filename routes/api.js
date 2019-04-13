@@ -1,10 +1,11 @@
 const cors    = require('cors'),
       express = require('express'),
-      router  = express.Router();
+      router  = express.Router(),
+      strings = require('./strings');
 
 const sendRaw = (res, message) => {
   if (!message) {
-    message = 'Sorry. There\'s either nothing here or this document has been deleted.\n';
+    message = strings.goneOrDeleted;
   }
 
   res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -16,8 +17,8 @@ const sendRaw = (res, message) => {
 router.get('/', cors(), (req, res) => {
   if (!req.query.user && !req.query.job) {
     return res.render('api.pug', {
-      title: 'Upwordly API version 1.0.0',
-      message: 'Please specify a stenographer and a job to download raw transcripts (https://upword.ly/api/?user=stanley&job=mopd-2019-1-6). Or for a snippet, redirect to /snippet and add a start and ending index (https://upword.ly/api/snippet?user=stanley&job=mopd-2019-1-6&start=0&end=200).',
+      title: strings.title,
+      message: strings.fullTextBlurb,
     });
   }
 
@@ -26,7 +27,7 @@ router.get('/', cors(), (req, res) => {
 
   doc.fetch(err => {
     if (err) {
-      res.send(500, 'Sorry, that doc could not be fetched.').end();
+      res.send(500, strings.fetchFail).end();
     }
 
     sendRaw(res, doc.data);
@@ -37,8 +38,8 @@ router.get('/', cors(), (req, res) => {
 router.get('/snippet', cors(), (req, res) => {
   if (!req.query.user && !req.query.job) {
     return res.render('api.pug', {
-      title: 'Upwordly API version 1.0.0',
-      message: 'Please specify a stenographer and a job to download raw snippet with a start and ending index (https://upword.ly/api/snippet?user=stanley&job=mopd-2019-1-6&start=0&end=200).',
+      title: strings.title,
+      message: strings.snippetBlurb,
     });
   }
 
@@ -47,7 +48,7 @@ router.get('/snippet', cors(), (req, res) => {
 
   doc.fetch(err => {
     if (err) {
-      return res.end('Sorry, that doc could not be fetched.');
+      return res.end(strings.fetchFail);
     }
 
     const snippet = doc.data
@@ -71,16 +72,16 @@ router.delete('/', cors(), (req, res) => {
 
   try {
     doc.fetch(err => {
-      if (err) res.status(500).send('Sorry, there was an error in retrieving that document for deletion.');
+      if (err) res.status(500).send(strings.retrievalError);
 
       doc.del(err => {
-        if (err) res.status(500).send('Sorry, there was an error in deleting that document.');
+        if (err) res.status(500).send(strings.deleteFail);
         doc.destroy();
-        res.status(200).send('Job successfully deleted!');
+        res.status(200).send(strings.deleteSuccess);
       });
     });
   } catch (err) {
-    res.status(500).send('Sorry. That document exist or is empty!');
+    res.status(500).send(strings.goneOrDeleted);
   }
 });
 

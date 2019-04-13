@@ -4,7 +4,8 @@
   "description": "Backend for Upwordly WebSockets servers.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "copy": "scp -r ~/Developer/upwordly-backend* stanley@upword.ly:~/upwordly/",
+    "start": "NODE_ENV=production PORT=9090 node app.js",
     "startdev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

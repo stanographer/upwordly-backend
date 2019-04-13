@@ -1,6 +1,6 @@
 version: '1'
 services:
-  node:
+  server:
     container_name: upwordly-backend-node
     restart: always
     build: .

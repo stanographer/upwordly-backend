@@ -1,4 +1,5 @@
 // Mongo and Redis Servers
+
 const mongo = require('sharedb-mongo')(
   process.env.NODE_ENV === 'production'
     ? 'mongodb://165.227.187.41:27017/upwordly'
@@ -13,5 +14,5 @@ const redis = require('sharedb-redis-pubsub')(
 
 module.exports = {
   mongo,
-  redis
+  redis,
 };

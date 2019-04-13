@@ -75,7 +75,7 @@ function startServer(port) {
     backend.listen(stream);
   });
 
-  server.listen(port, () => console.info('WS port running on: ' + port + ' 📡'));
+  server.listen(port, () => console.info('Server running on port: ' + port + ' 📡'));
 }
 
 // Attach backend to "app" to share with routes.
