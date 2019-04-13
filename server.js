@@ -14,8 +14,6 @@ const apiRouter           = require('./routes/api'),
 
 // Creating express server.
 const app = express();
-const server = http.createServer(app);
-const socket = new WebSocket.Server({ server });
 
 // Hooking up ShareDB backend to Redis and Mongo.
 const backend = new ShareDB({
@@ -63,6 +61,9 @@ app.use((err, req, res, next) => {
 // Create a web server to serve raw transcript data
 // and listen to WebSocket connections.
 function startServer(port) {
+  const server = http.createServer(app);
+  const socket = new WebSocket.Server({ server });
+
   socket.on('connection', (websocket, req) => {
     if (process.env.NODE_ENV !== 'production') {
       websocket.on('message', data => {
