@@ -1,9 +1,9 @@
 version: '3'
 services:
   server:
-    container_name: upwordly-backend-node
-    restart: always
-    build: .
+    image: upwordly-master:1.0.0
+    deploy:
+      replicas: 1
     ports:
       - 9090:9090
   visualizer:
