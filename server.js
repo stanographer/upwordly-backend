@@ -17,8 +17,8 @@ const app = express();
 
 // Hooking up ShareDB backend to Redis and Mongo.
 const backend = new ShareDB({
-  db: connections.mongo,
-  pubsub: connections.redis,
+  db: connections.mongo(),
+  pubsub: connections.redis(),
   disableSpaceDelimitedActions: true,
   disableDocAction: true,
 });

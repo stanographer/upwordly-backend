@@ -7,7 +7,7 @@
     "copy": "scp -r ~/Developer/upwordly-backend* stanley@upword.ly:~/upwordly/",
     "start": "NODE_ENV=production MONGO_IP=165.227.187.41:27017 REDIS_IP=134.209.40.72:6379 PORT=9090 node app.js",
     "startdev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "steno",
@@ -32,6 +32,7 @@
     "express": "^4.16.4",
     "http": "0.0.0",
     "http-errors": "^1.7.2",
+    "jest": "^24.7.1",
     "os": "^0.1.1",
     "ot-text": "^1.0.2",
     "pug": "^2.0.3",
@@ -40,7 +41,11 @@
     "websocket-json-stream": "0.0.3",
     "ws": "^6.2.1"
   },
+  "jest": {
+    "verbose": true
+  },
   "devDependencies": {
+    "@types/jest": "^24.0.11",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.11"
   },
