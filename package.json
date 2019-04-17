@@ -6,7 +6,7 @@
   "scripts": {
     "copy": "scp -r ~/Developer/upwordly-backend* stanley@upword.ly:~/upwordly/",
     "start": "NODE_ENV=production MONGO_IP=165.227.187.41:27017 REDIS_IP=134.209.40.72:6379 PORT=9090 node app.js",
-    "startdev": "nodemon app.js",
+    "startdev": "FIREBASE_API_KEY=AIzaSyD9kUhusklUOTC36blxrrGYILIaPd3e7Bw FIREBASE_AUTH_DOMAIN=aloft-53221.firebaseapp.com FIREBASE_DATABASE_URL=https://aloft-53221.firebaseio.com FIREBASE_PROJECT_ID=aloft-53221 FIREBASE_STORAGE_BUCKET=aloft-53221.appspot.com  FIREBASE_MESSAGING_SENDER_ID=439623820482 FIREBASE_HTTP_PORT=1988 FIREBASE_REG_KEY=pusheen88 SKIP_PREFLIGHT_CHECK=true nodemon app.js",
     "test": "jest"
   },
   "keywords": [
@@ -30,6 +30,7 @@
     "cluster": "^0.7.7",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "firebase": "^5.9.4",
     "http": "0.0.0",
     "http-errors": "^1.7.2",
     "jest": "^24.7.1",

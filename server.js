@@ -64,15 +64,60 @@ function startServer(port) {
   const server = http.createServer(app);
   const socket = new WebSocket.Server({ server });
 
+  const broadcast = (data, ws) => {
+    socket.clients.forEach(client => {
+      if (client !== ws && client.readyState === 1) {
+        client.send(JSON.stringify(data));
+      }
+    });
+  };
+
   socket.on('connection', (websocket, req) => {
+    let id;
+
+    process.on('message', message => {
+      broadcast(message, websocket);
+    });
+
     if (process.env.NODE_ENV !== 'production') {
       websocket.on('message', data => {
-        console.log(data);
+        const action = JSON.parse(data);
+
+        switch (action.type) {
+          // Record the user logged on.
+          case 'LOG_ON':
+            id = action.payload.id;
+            process.send({
+              type: 'LOG_ON',
+              payload: action.payload,
+            });
+            break;
+          // List out logged-on users.
+          case 'LIST_USERS':
+            process.send({
+              type: 'LIST_USERS',
+              payload: '',
+            });
+            break;
+          // Returns current user count.
+          case 'USER_COUNT':
+            process.send({
+              type: 'USER_COUNT',
+              payload: '',
+            });
+            break;
+          default:
+            break;
+        }
       });
     }
 
-    websocket.on('close', data => {
-      console.log('disconnected', data);
+    websocket.on('close', () => {
+      // Remove user from list.
+      process.send({
+        type: 'LOG_OFF',
+        payload: id,
+      });
     });
 
     const stream = new WebSocketJSONStream(websocket);
