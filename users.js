@@ -68,6 +68,7 @@ const Users = (function() {
         const stats = Firebase.job(key).child('stats');
         const currentViewCount = stats.child('currentViewCount');
         const currentViewers = stats.child('currentViewers');
+        const viewers = stats.child('viewers');
 
         currentViewCount
           .transaction(current => !current ? 1 : current - 1)
@@ -84,6 +85,21 @@ const Users = (function() {
               .then(() => 'remove succeeded!');
           })
           .then(() => console.log('successfully removed viewer.'));
+
+        viewers
+          .orderByChild('id')
+          .equalTo(payload.id)
+          .once('value', snapshot => {
+            const key = Object.keys(snapshot.val())[0];
+
+            snapshot
+              .ref
+              .child(key)
+              .update({
+                logOffTime: new Date()
+              })
+              .then(time => console.log('successfully logged viewer logoff.', time));
+          }).then(() => console.log('user logged off.'));
       };
 
       if (payload.job) {
