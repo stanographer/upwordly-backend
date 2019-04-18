@@ -3,18 +3,36 @@ const cors    = require('cors'),
       router  = express.Router(),
       strings = require('./strings');
 
+// Set up CORS.
+const whitelist = [
+  'http://localhost:3000',
+  'http://localhost:3001'
+];
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 const sendRaw = (res, message) => {
   if (!message) {
     message = strings.goneOrDeleted;
   }
 
-  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+  res.writeHead(200, {
+    'Content-Type': 'text/plain; charset=utf-8'
+  });
   res.write(message);
   res.end();
 };
 
 // Raw text API allows retrieval of full raw transcript text.
-router.get('/', cors(), (req, res) => {
+router.get('/', cors(corsOptions), (req, res) => {
   if (!req.query.user && !req.query.job) {
     return res.render('api.pug', {
       title: strings.title,
@@ -35,7 +53,7 @@ router.get('/', cors(), (req, res) => {
 });
 
 // Retrieves snippets with given start and end indeces.
-router.get('/snippet', cors(), (req, res) => {
+router.get('/snippet', cors(corsOptions), (req, res) => {
   if (!req.query.user && !req.query.job) {
     return res.render('api.pug', {
       title: strings.title,
@@ -66,7 +84,7 @@ router.get('/snippet', cors(), (req, res) => {
 });
 
 // Deletes a job from the ShareDB repo.
-router.delete('/', cors(), (req, res) => {
+router.delete('/', cors(corsOptions), (req, res) => {
   const connection = req.app.backend.connect();
   const doc = connection.get(req.query.user, req.query.job);
 

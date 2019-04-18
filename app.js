@@ -1,7 +1,7 @@
-const cluster  = require('cluster'),
-      cpus     = require('os').cpus().length,
-      server   = require('./server'),
-      Users    = require('./users');
+const cluster = require('cluster'),
+      cpus    = require('os').cpus().length,
+      server  = require('./server'),
+      Users   = require('./users');
 
 const PORT = process.env.PORT || 9090;
 
@@ -18,18 +18,12 @@ if (cluster.isMaster) {
     console.info(`Worker process (id: ${ worker.process.pid } online and listening. 👷`);
   });
 
-  const notifyWs = data => {
-    process.send({
-      type: 'UPDATE_USERS',
-      payload: data,
-    });
-  };
-
   workers.forEach(worker => {
     worker.on('message', message => {
+      console.log('message', message);
       switch (message.type) {
         case 'LOG_ON':
-          Users.addUser(message.payload, notifyWs);
+          Users.addUser(message.payload);
           break;
         case 'LOG_OFF':
           Users.removeUser(message.payload);

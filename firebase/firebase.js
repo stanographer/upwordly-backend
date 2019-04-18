@@ -15,14 +15,14 @@ const db = firebase.database();
 
 const user = uid => db.ref(`users/${ uid }`);
 
-const jobs = () => db.ref(`jobs`);
+const job = key => db.ref(`jobs/${ key }`);
 
 const jobsBySlug = slug => db.ref('jobs')
-      .orderByChild('slug')
-      .equalTo(slug);
+  .orderByChild('slug')
+  .equalTo(slug);
 
 module.exports = {
   user,
-  jobs,
+  job,
   jobsBySlug,
 };

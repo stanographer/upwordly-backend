@@ -23,6 +23,22 @@ const backend = new ShareDB({
   disableDocAction: true,
 });
 
+// Set up CORS.
+const whitelist = [
+  'http://localhost:3000',
+  'http://localhost:3001'
+];
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 // Register OT type.
 ShareDB.types.register(ottext.type);
 
@@ -30,16 +46,16 @@ ShareDB.types.register(ottext.type);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// Routes
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
-
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.static('public'));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Routes
+app.use('/', indexRouter);
+app.use('/api', apiRouter);
 
 // 404
 app.use((req, res, next) => {
@@ -64,59 +80,46 @@ function startServer(port) {
   const server = http.createServer(app);
   const socket = new WebSocket.Server({ server });
 
-  const broadcast = (data, ws) => {
-    socket.clients.forEach(client => {
-      if (client !== ws && client.readyState === 1) {
-        client.send(JSON.stringify(data));
+  socket.on('connection', (websocket, req) => {
+    let job = {};
+
+    websocket.on('message', data => {
+      const action = JSON.parse(data);
+
+      switch (action.type) {
+        // Record the user logged on.
+        case 'LOG_ON':
+          job = action.payload;
+
+          process.send({
+            type: 'LOG_ON',
+            payload: action.payload,
+          });
+          break;
+        // List out logged-on users.
+        case 'LIST_USERS':
+          process.send({
+            type: 'LIST_USERS',
+            payload: '',
+          });
+          break;
+        // Returns current user count.
+        case 'USER_COUNT':
+          process.send({
+            type: 'USER_COUNT',
+            payload: '',
+          });
+          break;
+        default:
+          break;
       }
     });
-  };
-
-  socket.on('connection', (websocket, req) => {
-    let id;
-
-    process.on('message', message => {
-      broadcast(message, websocket);
-    });
-
-    if (process.env.NODE_ENV !== 'production') {
-      websocket.on('message', data => {
-        const action = JSON.parse(data);
-
-        switch (action.type) {
-          // Record the user logged on.
-          case 'LOG_ON':
-            id = action.payload.id;
-            process.send({
-              type: 'LOG_ON',
-              payload: action.payload,
-            });
-            break;
-          // List out logged-on users.
-          case 'LIST_USERS':
-            process.send({
-              type: 'LIST_USERS',
-              payload: '',
-            });
-            break;
-          // Returns current user count.
-          case 'USER_COUNT':
-            process.send({
-              type: 'USER_COUNT',
-              payload: '',
-            });
-            break;
-          default:
-            break;
-        }
-      });
-    }
 
     websocket.on('close', () => {
       // Remove user from list.
       process.send({
         type: 'LOG_OFF',
-        payload: id,
+        payload: job,
       });
     });
 
@@ -131,6 +134,6 @@ function startServer(port) {
 app.backend = backend;
 
 module.exports = {
-  startServer,
   app,
+  startServer,
 };
