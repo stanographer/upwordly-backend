@@ -59,7 +59,6 @@ const Users = (function() {
         await Firebase.jobsBySlug(slug)
           .once('value', snapshot => {
             if (!snapshot.exists()) return;
-            console.log('snapshot exists: ', snapshot.val());
             key = Object.keys(snapshot.val())[0];
           });
         return key;

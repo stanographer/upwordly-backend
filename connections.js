@@ -8,7 +8,6 @@ const mongo = () => {
   );
 };
 
-
 const redis = () => {
   return require('sharedb-redis-pubsub')(
     process.env.NODE_ENV === 'production'

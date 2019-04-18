@@ -20,7 +20,6 @@ if (cluster.isMaster) {
 
   workers.forEach(worker => {
     worker.on('message', message => {
-      console.log('message', message);
       switch (message.type) {
         case 'LOG_ON':
           Users.addUser(message.payload);
