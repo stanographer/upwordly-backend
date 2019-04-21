@@ -23,12 +23,22 @@ const Users = (function() {
           const stats = Firebase.job(key).child('stats');
           const currentViewCount = stats.child('currentViewCount');
           const currentViewers = stats.child('currentViewers');
+          const maxSimViewers = stats.child('maxSimViewers');
           const viewCount = stats.child('viewCount');
           const viewers = stats.child('viewers');
 
+          let liveViewCount = 0;
+
           currentViewCount
             .transaction(current => !current ? 1 : current + 1)
-            .then(count => console.log('current count updated!', count.snapshot.val()))
+            .then(count => {
+              liveViewCount = count.snapshot.val();
+              console.log('current count updated!', count.snapshot.val());
+
+              maxSimViewers
+                .transaction(current => current < liveViewCount ? liveViewCount : current)
+                .then(count => console.log('max simultaneous count updated!', count.snapshot.val()));
+            })
             .catch(err => console.log('Failed to increment current viewer count', err));
 
           currentViewers
@@ -72,7 +82,10 @@ const Users = (function() {
 
         currentViewCount
           .transaction(current => !current ? 1 : current - 1)
-          .then(count => console.log('current count updated!', count.snapshot.val()))
+          .then(count => {
+            console.log('current count updated!', count.snapshot.val());
+            console.log('max count: ');
+          })
           .catch(err => console.log('Failed to increment current viewer count', err));
 
         currentViewers
