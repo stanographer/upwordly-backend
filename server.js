@@ -23,22 +23,6 @@ const backend = new ShareDB({
   disableDocAction: true,
 });
 
-// Set up CORS.
-const whitelist = [
-  'http://localhost:3000',
-  'http://localhost:3001'
-];
-
-const corsOptions = {
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
-
 // Register OT type.
 ShareDB.types.register(ottext.type);
 
@@ -47,7 +31,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Middlewares
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
 app.use(bodyParser.json());

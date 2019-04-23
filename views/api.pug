@@ -2,4 +2,26 @@ extends layout
 
 block content
     h1= title
-    p #{message}
+    .content
+        if message === 'fullTextBlurb'
+            .spacer
+            h3 Please specify a stenographer and a job to download raw transcripts.
+            code https://upword.ly/api/?user=stanley&job=coachella
+            .spacer
+            h3 Or for a snippet, redirect to /snippet and add a start and ending index.
+            code https://upword.ly/api/snippet?user=stanley&job=coachella&start=0&end=200
+
+        else if message === 'snippetBlurb'
+            .spacer
+            h3 Please specify a stenographer and a job to download raw snippet with a start and ending index.
+            code https://upword.ly/api/snippet?user=stanley&job=coachella&start=0&end=200
+
+        else
+            .spacer
+            h2 Welcome to the Upwordly API. Here's a quick starter:
+            .spacer
+            h3 Please specify a stenographer and a job to download raw transcripts.
+            code https://upword.ly/api/?user=stanley&job=coachella
+            .spacer
+            h3 Or for a snippet, redirect to /snippet and add a start and ending index.
+                code https://upword.ly/api/snippet?user=stanley&job=coachella&start=0&end=200
