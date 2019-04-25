@@ -12,20 +12,21 @@ const headers = {
 const whitelist = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'http://localhost:9090',
   'https://upword.ly',
   'https://coachella.upword.ly',
   'https://stagecoach.upword.ly',
   '68.183.61.38:443',
 ];
 
-const corsOptions = {
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+const corsOptionsDelegate = function(req, callback) {
+  let corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
 const sendRaw = (res, message) => {
@@ -39,7 +40,7 @@ const sendRaw = (res, message) => {
 };
 
 // Raw text API allows retrieval of full raw transcript text.
-router.get('/', cors(corsOptions), (req, res) => {
+router.get('/', cors(corsOptionsDelegate), (req, res) => {
   if (!req.query.user && !req.query.job) {
     return res.render('api.pug', {
       title: strings.title,
@@ -60,7 +61,7 @@ router.get('/', cors(corsOptions), (req, res) => {
 });
 
 // Retrieves snippets with given start and end indeces.
-router.get('/snippet', cors(corsOptions), (req, res) => {
+router.get('/snippet', cors(corsOptionsDelegate), (req, res) => {
   if (!req.query.user && !req.query.job) {
     return res.render('api.pug', {
       title: strings.title,
@@ -91,7 +92,7 @@ router.get('/snippet', cors(corsOptions), (req, res) => {
 });
 
 // Deletes a job from the ShareDB repo.
-router.delete('/', cors(corsOptions), (req, res) => {
+router.delete('/', cors(corsOptionsDelegate), (req, res) => {
   const connection = req.app.backend.connect();
   const doc = connection.get(req.query.user, req.query.job);
 

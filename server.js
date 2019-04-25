@@ -26,33 +26,12 @@ const backend = new ShareDB({
 // Register OT type.
 ShareDB.types.register(ottext.type);
 
-// CORS Config.
-// CORS config.
-const whitelist = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'https://upword.ly',
-  'https://coachella.upword.ly',
-  'https://stagecoach.upword.ly',
-  '68.183.61.38:443',
-];
-
-const corsOptions = {
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
-
 // View engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Middlewares
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
 app.use(bodyParser.json());
@@ -121,6 +100,7 @@ function startServer(port) {
     });
 
     websocket.on('close', () => {
+
       // Remove user from list.
       process.send({
         type: 'LOG_OFF',
