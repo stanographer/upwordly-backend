@@ -15,6 +15,7 @@ const whitelist = [
   'https://upword.ly',
   'https://coachella.upword.ly',
   'https://stagecoach.upword.ly',
+  '68.183.61.38:443',
 ];
 
 const corsOptions = {
