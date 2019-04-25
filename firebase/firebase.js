@@ -11,6 +11,7 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
 const db = firebase.database();
 
 const user = uid => db.ref(`users/${ uid }`);

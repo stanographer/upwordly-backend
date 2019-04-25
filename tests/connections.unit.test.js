@@ -1,4 +1,4 @@
-const { mongo, redis } = require('./connections');
+const { mongo, redis } = require('../connections');
 
 let mongodb;
 let redisdb;

@@ -1,3 +1,6 @@
+// Environment variables.
+require('custom-env').env(true);
+
 const cluster = require('cluster'),
       cpus    = require('os').cpus().length,
       server  = require('./server'),
