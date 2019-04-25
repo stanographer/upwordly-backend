@@ -3,14 +3,19 @@ const cors    = require('cors'),
       router  = express.Router(),
       strings = require('./strings');
 
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+  'Access-Control-Max-Age': 2592000, // 30 days
+  'Content-Type': 'text/plain; charset=utf-8',
+};
+
 const sendRaw = (res, message) => {
   if (!message) {
     message = strings.goneOrDeleted;
   }
 
-  res.writeHead(200, {
-    'Content-Type': 'text/plain; charset=utf-8'
-  });
+  res.writeHead(200, headers);
   res.write(message);
   res.end();
 };
