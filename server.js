@@ -26,34 +26,33 @@ const backend = new ShareDB({
 // Register OT type.
 ShareDB.types.register(ottext.type);
 
-// CORS Config.
-// CORS config.
-const whitelist = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:9090',
-  'https://upword.ly',
-  'https://coachella.upword.ly',
-  'https://stagecoach.upword.ly',
-  '68.183.61.38:443',
-];
-
-const corsOptionsDelegate = function(req, callback) {
-  let corsOptions;
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false }; // disable CORS for this request
-  }
-  callback(null, corsOptions); // callback expects two parameters: error and options
-};
+// // CORS Config.
+// const whitelist = [
+//   'http://localhost:3000',
+//   'http://localhost:3001',
+//   'http://localhost:9090',
+//   'https://upword.ly',
+//   'https://coachella.upword.ly',
+//   'https://stagecoach.upword.ly',
+//   '68.183.61.38:443',
+// ];
+//
+// const corsOptionsDelegate = function(req, callback) {
+//   let corsOptions;
+//   if (whitelist.indexOf(req.header('Origin')) !== -1) {
+//     corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+//   } else {
+//     corsOptions = { origin: false }; // disable CORS for this request
+//   }
+//   callback(null, corsOptions); // callback expects two parameters: error and options
+// };
 
 // View engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Middlewares
-app.use(cors(corsOptionsDelegate));
+app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
 app.use(bodyParser.json());

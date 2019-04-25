@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "copy": "scp -r ~/Developer/upwordly-backend* stanley@upword.ly:~/upwordly/",
+    "env": "scp ~/Developer/upwordly-backend/.env.production stanley@upword.ly:~/upwordly-backend",
     "start": "NODE_ENV=production node app.js",
     "startdev": "NODE_ENV=development nodemon app.js",
     "test": "jest"
@@ -29,6 +30,7 @@
     "body-parser": "^1.18.3",
     "cluster": "^0.7.7",
     "cors": "^2.8.5",
+    "custom-env": "^1.0.0",
     "express": "^4.16.4",
     "firebase": "^5.9.4",
     "http": "0.0.0",
@@ -48,7 +50,6 @@
     "@types/jest": "^24.0.11",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "custom-env": "^1.0.0",
     "jest": "^24.7.1",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.11",
