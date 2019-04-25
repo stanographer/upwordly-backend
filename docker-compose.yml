@@ -4,5 +4,7 @@ services:
     image: upwordly-master:1.0.0
     deploy:
       replicas: 2
+    environment:
+      - production
     ports:
       - 9090:9090
